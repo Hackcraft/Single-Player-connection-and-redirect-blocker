@@ -11,6 +11,7 @@ local CurTime = CurTime
 local IsValid = IsValid
 local ipairs = ipairs
 local pairs = pairs
+local table = table.Copy(table)
 local file = table.Copy(file)
 local string = table.Copy(string)
 local net = table.Copy(net)
@@ -81,7 +82,6 @@ local function TableHasIP(ip, tab)
 end
 
 local function AddonFromIP(ip)
---	local time = tostring(math.Round(CurTime()))
 	local hasIP
 
 	// RunStringLog
@@ -109,10 +109,10 @@ end
 local attempts = {}
 local function HandleConnectionAttempt(ip, info)
 
-	local fullip = ip
-
 	if attempts[fullip .. info.short_src] != nil then return end
 	attempts[fullip .. info.short_src] = true
+
+	local fullip = ip
 
 	if string.find(ip, ";") then
 		local start, _, _ = string.find(ip, ";")
@@ -145,7 +145,7 @@ local function HandleConnectionAttempt(ip, info)
 				"An addon tried to connect you to: " .. fullip,
 				"The suspected addon is: " .. isAddon,
 				"The suspected file is: " .. where,
-				"The Workshop link is: ", link,
+				"The Workshop link is: " .. link,
 				"Please note that this is not 100% accurate!"
 			})
 			return
@@ -237,18 +237,6 @@ function meta:SendLua(str)
 end
 
 /*
-	Remove old
-
-timer.Create("RemoveOldLogs_Connection_blocker", 1, 0, function()
-	local time = tostring(math.Round(CurTime() - 3))
-	if RunStringLog[time] != nil then RunStringLog[time] = nil end
-	if ComplileStringLog[time] != nil then ComplileStringLog[time] = nil end
-	if ComplileFileLog[time] != nil then ComplileFileLog[time] = nil end
-	if SendLuaLog[time] != nil then SendLuaLog[time] = nil end
-end)
-*/
-
-/*
 	Net messages
 */
 net.Receive("ConnectCommandBlock_Search", function(len, ply)
@@ -301,27 +289,4 @@ net.Receive("ConnectCommandBlock_Search", function(len, ply)
 	end
 
 end)
-
-
-
---RunString("LocalPlayer():ConCommand('connect 68.68.68.68:27068')")
---CompileString("LocalPlayer():ConCommand('connect 68.68.68.68:27068')","cool",true)
---if SERVER then
---	player.GetHumans()[1]:SendLua("LocalPlayer():ConCommand('connect 67.67.67.67')")
---	player.GetHumans()[1]:SendLua("LocalPlayer():ConCommand('connect 67.67.67.67:27077; password noob')") 
---else
---	LocalPlayer():ConCommand("connect 67.67.67.67; password noob")
---end
-/*
-concommand.Add("testCon", function()
-	player.GetHumans()[1]:SendLua("LocalPlayer():ConCommand('connect 67.67.67.67:27077; password noob')") 
-end)
-concommand.Add("testCon2", function()
-	local f, l = AddonFromFile("gamemodes/darkrp/gamemode/init.lua")
-	print(f, l)
-end)
-concommand.Add("testCon3", function()
-	RunConsoleCommand("connect", "67.67.67.67; password noob")
-end)
-*/
  
