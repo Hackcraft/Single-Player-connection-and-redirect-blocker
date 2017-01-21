@@ -5,7 +5,7 @@
 if !game.SinglePlayer then return end
 print("Loaded singleplayer connect to server block!")
 
-// Locals -- Logs older than 3 seconds will be deleted!
+// Locals 
 local meta = FindMetaTable("Player")
 local CurTime = CurTime
 local IsValid = IsValid
