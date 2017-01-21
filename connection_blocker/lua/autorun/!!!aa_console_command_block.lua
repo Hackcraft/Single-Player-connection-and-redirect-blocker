@@ -1,9 +1,9 @@
 /*
-	Server connect block for singleplayer made by Hackcraft STEAM_0:1:50714411
+	Server connect block for single player made by Hackcraft STEAM_0:1:50714411
 */
 
 if !game.SinglePlayer then return end
-print("Loaded singleplayer connect to server block!")
+print("Loaded single player connect to server block!")
 
 // Locals 
 local meta = FindMetaTable("Player")
